@@ -27,10 +27,16 @@ twitter = new Twit
 stream = twitter.stream 'user'
 
 stream.on 'tweet', (tweet) =>
+	replies = [ 'Ja. Heil.', 'Ja - heil.', 'Neger.', 'Muss man wissen.' ]
+	r = Math.floor Math.random() * replies.length
+	reply = replies[r]
+
 	if tweet.in_reply_to_user_id? && tweet.user.screen_name != 'DrAxelStoll'
 		twitter.post 'statuses/update'
-			status: '@' + tweet.user.screen_name + ' Ja - heil.'
+			
+			status: '@' + tweet.user.screen_name + ' ' + reply
 			(err, result) ->
+				console.log '[-] Possible duplicate.'
 				# do nothing
 
 
