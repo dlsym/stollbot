@@ -36,7 +36,8 @@ stream.on 'tweet', (tweet) =>
 			
 			status: '@' + tweet.user.screen_name + ' ' + reply
 			(err, result) ->
-				console.log '[-] Possible duplicate.'
+				if err?
+					console.log '[-] Possible duplicate.'
 				# do nothing
 
 
