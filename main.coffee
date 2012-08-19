@@ -64,9 +64,9 @@ interval = (ms, func) -> setInterval func, ms
 #
 post_tweet = (text) ->
 	twitter.post 'statuses/update',
-		status: quote,
+		status: text + padstr(),
 		(err, result) ->
-			console.log '[i] Tweet: ' + quote + padstr()
+			console.log '[i] Tweet: ' + text
 			if err?
 				console.log '[-] Possible duplicate.'
 	
