@@ -38,27 +38,33 @@ stream.on 'tweet', (tweet) =>
 			(err, result) ->
 				if err?
 					console.log '[-] Possible duplicate.'
-				# do nothing
+				else
+					console.log '[+] Rplto: @' + tweet.user.screen_name + ' ' + reply
 
+
+padstr = ->
+	(Math.random().toString(36)).substr(0, Math.random()*10).replace /./g, ' '
 
 interval = (ms, func) -> setInterval func, ms
 
-interval 500000, ->
+interval 5000000, ->
+	num = Math.floor Math.random() * 10
+	
 	quote = sdb.randomQuote()
 	twitter.post 'statuses/update',
 		status: quote
 		(err, result) ->
-			console.log 'Tweet: ' + quote
+			console.log '[i] Tweet: ' + quote + padstr()
+			if err?
+				console.log '[-] Possible duplicate.'
 
-interval 362500, ->
+interval 962500, ->
 	quote = sdb.randomQuote()
 	twitter.post 'statuses/update',
 		status: quote,
-			(err, result) ->
-				console.log 'Tweet: ' + quote
-
-
-
-
+		(err, result) ->
+			console.log '[i] Tweet: ' + quote + padstr()
+			if err?
+				console.log '[-] Possible duplicate.'
 
 
