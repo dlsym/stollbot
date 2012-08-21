@@ -5,8 +5,12 @@
 # (c) 2012 Das Plutonium Imperium & @dlsym
 # 
 
-Twit = require 'twit'
-StolliDB = require './stollidb'
+Twit      = require 'twit'
+StolliDB  = require './stollidb'
+Stollator = require './stollator'
+
+fs = require 'fs'
+
 
 
 
@@ -14,7 +18,8 @@ StolliDB = require './stollidb'
 console.log 'Welcome to Stollbot 0.5.15 (Flugscheibe)'
 
 # Load quotes 
-sdb = new StolliDB 'stolli.dat'
+sdb       = new StolliDB 'stolli.dat'
+stollator = new Stollator 'phrases.dat' 
 
 # Print test quote
 console.log sdb.randomQuote()
@@ -31,11 +36,16 @@ twitter = new Twit
 	access_token_secret: ''
 
 
+log = fs.createWriteStream 'stollog.log'
+	flags: 'a'
+
+
 #
 # User interactions
 #
 stream = twitter.stream 'user'
 stream.on 'tweet', (tweet) =>
+	###
 	replies = [ 'Ja. Heil.', 'Ja - heil.', 'Neger.', 'Muss man wissen.' ]
 	r = Math.floor Math.random() * replies.length
 	reply = replies[r]
@@ -49,6 +59,13 @@ stream.on 'tweet', (tweet) =>
 					console.log '[-] Possible duplicate.'
 				else
 					console.log '[+] Rplto: @' + tweet.user.screen_name + ' ' + reply
+	log.write "-----------------------------------------------\n"
+	log.write JSON.stringify(tweet)
+	log.write "\n"
+	console.log '[i] Added tweet to log...'
+	###
+	
+	
 
 
 #
@@ -71,10 +88,21 @@ post_tweet = (text) ->
 				console.log '[-] Possible duplicate.'
 	
 
-interval 5500000, ->
+interval 4600000, ->
 	quote = sdb.randomQuote()
 	post_tweet quote
 
-interval 1562500, ->
+interval 3700000, ->
 	quote = sdb.randomQuote()
 	post_tweet quote
+
+interval 1700000, ->
+	console.log "[i] Creating Stolliquote!"
+	quote = sollator.make_quote()
+	post_tweet quote
+
+
+quote = stollator.make_quote()
+post_tweet quote
+
+
