@@ -98,7 +98,7 @@ interval 3700000, ->
 
 interval 1700000, ->
 	console.log "[i] Creating Stolliquote!"
-	quote = sollator.make_quote()
+	quote = stollator.make_quote()
 	post_tweet quote
 
 
